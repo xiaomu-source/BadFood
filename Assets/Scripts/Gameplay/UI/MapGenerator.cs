@@ -17,7 +17,7 @@ public class MapGenerator : MonoBehaviour
     public bool drawGizmos = true;
 
     // 最小单元格尺寸
-    public int cellSize = 60;
+    public int cellSize = 64;
 
     // 将加载的数据存为成员变量，方便 OnDrawGizmos 中访问
     private LevelData levelData;
@@ -143,18 +143,18 @@ public class MapGenerator : MonoBehaviour
         Gizmos.color = new Color(0.8f, 0.8f, 0.8f, 0.1f);
 
         // 垂直辅助线
-        for (int x = 0; x < 32; x++)
+        for (int x = 0; x < 30; x++)
         {
             Gizmos.DrawLine(new Vector3(x * cellSize, 0, 0), new Vector3(x * cellSize, 1080, 0));
         }
 
         // 绘制水平辅助线
-        for (int x = 0; x < 18; x++)
+        for (int x = 0; x < 16; x++)
         {
-            Gizmos.DrawLine(new Vector3(0, x * cellSize, 0), new Vector3(1920, x * cellSize, 0));
+            Gizmos.DrawLine(new Vector3(0, 56 + x * cellSize, 0), new Vector3(1920, 56 + x * cellSize, 0));
         }
 
-        // 当数据已经加载后，绘制每个单元格的边界（假设每个格子的大小为 60x60）
+        // 当数据已经加载后，绘制每个单元格的边界（假设每个格子的大小为 64x64）
         if (levelData != null && levelData.cells != null)
         {
             Gizmos.color = Color.green;
@@ -163,7 +163,7 @@ public class MapGenerator : MonoBehaviour
                 // 计算中心位置
                 Vector2 center = cell.GetCenterPosition();
                 Vector3 pos = new Vector3(center.x, center.y + 1080, 0);
-                // 绘制一个以中心点为中心、大小为 60x60 的线框矩形
+                // 绘制一个以中心点为中心、大小为 64x64 的线框矩形
                 Gizmos.DrawWireCube(pos, new Vector3(cellSize, cellSize, 0));
             }
         }

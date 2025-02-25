@@ -25,8 +25,8 @@ public class CellData
             return Vector2.zero;
         }
         return new Vector2(
-            coordinates[0].x * 60f,  // 转换为像素坐标
-            -coordinates[0].y * 60f
+            coordinates[0].x * 64f,  // 转换为像素坐标
+            -coordinates[0].y * 64f
         );
     }
 }
