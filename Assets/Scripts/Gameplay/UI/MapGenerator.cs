@@ -32,7 +32,18 @@ public class MapGenerator : MonoBehaviour
     {
         // 创建四个分组对象
         CreateGroups();
+        // 将 pathEntranceGroup 对象设为不显示
+        HidePathEntranceGroup();
         LoadLevelData("Data/map1");
+    }
+
+    // 新增的 HidePathEntranceGroup 方法
+    private void HidePathEntranceGroup()
+    {
+        if (pathEntranceGroup != null)
+        {
+            pathEntranceGroup.gameObject.SetActive(false);
+        }
     }
 
     void CreateGroups()
