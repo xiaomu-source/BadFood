@@ -25,7 +25,7 @@ public class CustomerMovement : MonoBehaviour
         }
 
         Vector3 target = pathPoints[currentIndex];
-        Debug.Log($"当前位置：{transform.position}，目标位置：{target}");
+        // Debug.Log($"当前位置：{transform.position}，目标位置：{target}");
         transform.position = Vector3.MoveTowards(
             transform.position,
             target,
@@ -36,7 +36,7 @@ public class CustomerMovement : MonoBehaviour
 
         if (Vector3.Distance(transform.position, target) < reachThreshold)
         {
-            Debug.Log($"到达路径点 {currentIndex}");
+            // Debug.Log($"到达路径点 {currentIndex}");
             currentIndex++;
             if (currentIndex >= pathPoints.Count)
             {

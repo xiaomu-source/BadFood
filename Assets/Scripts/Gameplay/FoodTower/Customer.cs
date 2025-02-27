@@ -34,7 +34,7 @@ public class Customer : MonoBehaviour
         calories += amount;
         // 更新UI显示
         UpdateCaloriesText();
-        Debug.Log($"顾客的卡路里值增加了 {amount}，当前卡路里值为 {calories}");
+        // Debug.Log($"顾客的卡路里值增加了 {amount}，当前卡路里值为 {calories}");
     }
 
     // 更新卡路里值显示的方法

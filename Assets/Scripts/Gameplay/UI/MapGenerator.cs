@@ -34,6 +34,8 @@ public class MapGenerator : MonoBehaviour
         CreateGroups();
         // 将 pathEntranceGroup 对象设为不显示
         HidePathEntranceGroup();
+        // HideBuildableGroup();
+        HideShopGroup();
         LoadLevelData("Data/map1");
     }
 
@@ -43,6 +45,24 @@ public class MapGenerator : MonoBehaviour
         if (pathEntranceGroup != null)
         {
             pathEntranceGroup.gameObject.SetActive(false);
+        }
+    }
+    
+    // 新增的 HideBuildableGroup 方法
+    private void HideBuildableGroup()
+    {
+        if (buildableGroup != null)
+        {
+            buildableGroup.gameObject.SetActive(false);
+        }
+    }
+    
+    // 新增的 HideShopGroup 方法
+    private void HideShopGroup()
+    {
+        if (shopGroup != null)
+        {
+            shopGroup.gameObject.SetActive(false);
         }
     }
 
