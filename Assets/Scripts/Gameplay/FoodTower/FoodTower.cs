@@ -1,22 +1,57 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class FoodTower : MonoBehaviour
 {
     public GameObject foodPrefab;
-    public float generationInterval = 3f;
+    public int id;
+    public float interval = 3f;
+    public string towerName;
+
+    public string buildCoins;
+
+    // public string image;
+    public int foodId;
+    public float calCur;
+
+    // 用于显示顾客图像的Image组件
+    private Image towerImage;
 
     void Start()
     {
+        // towerImage = GetComponentInChildren<Image>();
+        // if (towerImage == null)
+        // {
+        //     Debug.LogError("未找到用于显示食物塔图像的Image组件，请确保食物塔图像对象下有Image子对象。");
+        // }
+        // else
+        // {
+        //     // 从指定路径加载顾客图像
+        //     LoadTowerImage();
+        // }
+
         StartCoroutine(GenerateFoodRoutine());
     }
+
+    // private void LoadTowerImage()
+    // {
+    //     Sprite towerSprite = Resources.Load<Sprite>(image);
+    //     if (towerSprite != null)
+    //     {
+    //         towerImage.sprite = towerSprite;
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError($"未能找到食物塔图像，路径：{image}");
+    //     }
+    // }
 
     IEnumerator GenerateFoodRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(generationInterval);
+            yield return new WaitForSeconds(interval);
             GenerateFood();
         }
     }

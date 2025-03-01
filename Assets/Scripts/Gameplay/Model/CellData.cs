@@ -10,10 +10,11 @@ public class CellData
     public enum CellType
     {
         Path,
-        Buildable,
         Entrance,
+        Buildable,
         Shop,
-        EquipmentStorage
+        ShopButton,
+        EquipmentStorage,
     }
 
     // 计算中心点

@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 8831967196249582908}
   - component: {fileID: 9156850031414236287}
   - component: {fileID: 6197727506404472229}
-  - component: {fileID: 14394720150620311}
   - component: {fileID: -123982941486242671}
   m_Layer: 5
   m_Name: Customer
@@ -276,21 +275,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &14394720150620311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 602201186379122383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61d0915747984e22932a4fe9ff4545b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 200
-  rotationSpeed: 5
-  reachThreshold: 5
 --- !u!114 &-123982941486242671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,5 +287,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a31545e5eb7450fa9bd38d67c171b58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: xiaomu
-  currentCalories: 0
+  calories: 0
+  onCustomerDestroyed:
+    m_PersistentCalls:
+      m_Calls: []
+  speed: 2
+  rotationSpeed: 5
+  reachThreshold: 0.1

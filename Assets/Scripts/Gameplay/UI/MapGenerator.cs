@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -10,8 +9,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject entrancePrefab;
     public GameObject shopPrefab;
     public GameObject equipmentStoragePrefab;
-
-    public static List<Vector3> GlobalPathPoints = new List<Vector3>();
+    public GameObject shopButtonPrefab;
 
     // 用于控制是否显示辅助线
     public bool drawGizmos = true;
@@ -20,12 +18,13 @@ public class MapGenerator : MonoBehaviour
     public int cellSize = 64;
 
     // 将加载的数据存为成员变量，方便 OnDrawGizmos 中访问
-    private LevelData levelData;
+    private MapData _mapData;
 
     // 四个分组对象
     private Transform pathEntranceGroup;
     private Transform buildableGroup;
     private Transform shopGroup;
+    private Transform shopButtonGroup;
     private Transform equipmentStorageGroup;
 
     void Start()
@@ -36,7 +35,8 @@ public class MapGenerator : MonoBehaviour
         HidePathEntranceGroup();
         // HideBuildableGroup();
         HideShopGroup();
-        LoadLevelData("Data/map1");
+        HideShopButtonGroup();
+        GenerateMap();
     }
 
     // 新增的 HidePathEntranceGroup 方法
@@ -47,7 +47,7 @@ public class MapGenerator : MonoBehaviour
             pathEntranceGroup.gameObject.SetActive(false);
         }
     }
-    
+
     // 新增的 HideBuildableGroup 方法
     private void HideBuildableGroup()
     {
@@ -56,7 +56,7 @@ public class MapGenerator : MonoBehaviour
             buildableGroup.gameObject.SetActive(false);
         }
     }
-    
+
     // 新增的 HideShopGroup 方法
     private void HideShopGroup()
     {
@@ -66,12 +66,21 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    private void HideShopButtonGroup()
+    {
+        if (shopButtonGroup != null)
+        {
+            shopButtonGroup.gameObject.SetActive(false);
+        }
+    }
+
     void CreateGroups()
     {
         pathEntranceGroup = CreateGroupObject("PathEntranceGroup");
         buildableGroup = CreateGroupObject("BuildableGroup");
         shopGroup = CreateGroupObject("ShopGroup");
         equipmentStorageGroup = CreateGroupObject("EquipmentStorageGroup");
+        shopButtonGroup = CreateGroupObject("shopButtonGroup");
     }
 
     Transform CreateGroupObject(string groupName)
@@ -92,63 +101,39 @@ public class MapGenerator : MonoBehaviour
         return groupObj.transform;
     }
 
-    void LoadLevelData(string fileName)
+    void GenerateMap()
     {
-        TextAsset jsonData = Resources.Load<TextAsset>(fileName);
-
-        if (jsonData != null)
-        {
-            levelData = JsonConvert.DeserializeObject<LevelData>(jsonData.text);
-            GenerateMap(levelData);
-        }
-        else
-        {
-            Debug.LogError("Failed to load map data from Resources.");
-        }
+        InstantiateObjects(Game.GlobalPathPoints, CellData.CellType.Path);
+        InstantiateObjects(Game.GlobalBuildablePoints, CellData.CellType.Buildable);
+        InstantiateObjects(Game.GlobalEntrancePoints, CellData.CellType.Entrance);
+        InstantiateObjects(Game.GlobalShopPoints, CellData.CellType.Shop);
+        InstantiateObjects(Game.GlobalEquipmentStoragePoints, CellData.CellType.EquipmentStorage);
+        InstantiateObjects(Game.GlobalShopButtonPoints, CellData.CellType.ShopButton);
     }
 
-    void GenerateMap(LevelData data)
+    void InstantiateObjects(List<Vector3> points, CellData.CellType cellType)
     {
-        GlobalPathPoints.Clear();
-
-        foreach (CellData cell in data.cells)
+        foreach (Vector3 point in points)
         {
-            if (cell.cellType == CellData.CellType.Path ||
-                cell.cellType == CellData.CellType.Entrance)
-            {
-                Vector3 worldPos = GetWorldPosition(cell.GetCenterPosition());
-                GlobalPathPoints.Add(worldPos);
-            }
-
-            Vector2 position = cell.GetCenterPosition();
-            GameObject prefab = GetPrefabByType(cell.cellType);
-
+            GameObject prefab = GetPrefabByType(cellType);
+            Vector3 rawPoint = new Vector3(point.x, point.y - 1080, point.z);
             if (prefab != null)
             {
-                Transform parentGroup = GetParentGroup(cell.cellType);
+                Transform parentGroup = GetParentGroup(cellType);
                 // 将预制体实例化为对应分组的子对象
                 GameObject instance = Instantiate(prefab, parentGroup);
                 // 对于 UI 元素，通常设置 localPosition 或 anchoredPosition 更合适
                 RectTransform rt = instance.GetComponent<RectTransform>();
                 if (rt != null)
                 {
-                    rt.anchoredPosition = position;
+                    rt.anchoredPosition = rawPoint;
                 }
                 else
                 {
-                    instance.transform.localPosition = new Vector3(position.x, position.y, 0);
+                    instance.transform.localPosition = new Vector3(rawPoint.x, rawPoint.y, 0);
                 }
             }
         }
-    }
-
-    private Vector3 GetWorldPosition(Vector2 rawPosition)
-    {
-        return new Vector3(
-            rawPosition.x,
-            rawPosition.y + 1080,
-            0
-        );
     }
 
     // 根据单元格类型获取对应的分组对象
@@ -159,6 +144,7 @@ public class MapGenerator : MonoBehaviour
             CellData.CellType.Path or CellData.CellType.Entrance => pathEntranceGroup,
             CellData.CellType.Buildable => buildableGroup,
             CellData.CellType.Shop => shopGroup,
+            CellData.CellType.ShopButton => shopButtonGroup,
             CellData.CellType.EquipmentStorage => equipmentStorageGroup,
             _ => null
         };
@@ -186,10 +172,10 @@ public class MapGenerator : MonoBehaviour
         }
 
         // 当数据已经加载后，绘制每个单元格的边界（假设每个格子的大小为 64x64）
-        if (levelData != null && levelData.cells != null)
+        if (_mapData != null && _mapData.cells != null)
         {
             Gizmos.color = Color.green;
-            foreach (CellData cell in levelData.cells)
+            foreach (CellData cell in _mapData.cells)
             {
                 // 计算中心位置
                 Vector2 center = cell.GetCenterPosition();
@@ -209,6 +195,7 @@ public class MapGenerator : MonoBehaviour
             CellData.CellType.Entrance => entrancePrefab,
             CellData.CellType.Shop => shopPrefab,
             CellData.CellType.EquipmentStorage => equipmentStoragePrefab,
+            CellData.CellType.ShopButton => shopButtonPrefab,
             _ => null
         };
     }

@@ -1,5 +1,5 @@
 [System.Serializable]
-public class LevelData 
+public class MapData 
 {
     public CellData[] cells;
 }
