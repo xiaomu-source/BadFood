@@ -1,0 +1,49 @@
+{
+  "foodTowers": [
+    {
+      "id": 1,
+      "name": "foodTower1",
+      "buildCoins": "10",
+      "image": "Image/FoodTowers/foodTower1",
+      "foodId": 1,
+      "interval": 2.0,
+      "calCur": 10.0
+    },
+    {
+      "id": 2,
+      "name": "foodTower2",
+      "buildCoins": "10",
+      "image": "Image/FoodTowers/foodTower2",
+      "foodId": 2,
+      "interval": 2.0,
+      "calCur": 10.0
+    },
+    {
+      "id": 3,
+      "name": "foodTower3",
+      "buildCoins": "10",
+      "image": "Image/FoodTowers/foodTower3",
+      "foodId": 3,
+      "interval": 2.0,
+      "calCur": 10.0
+    },
+    {
+      "id": 4,
+      "name": "foodTower4",
+      "buildCoins": "10",
+      "image": "Image/FoodTowers/foodTower4",
+      "foodId": 4,
+      "interval": 2.0,
+      "calCur": 10.0
+    },
+    {
+      "id": 5,
+      "name": "foodTower5",
+      "buildCoins": "10",
+      "image": "Image/FoodTowers/foodTower5",
+      "foodId": 5,
+      "interval": 2.0,
+      "calCur": 10.0
+    }
+  ]
+}
